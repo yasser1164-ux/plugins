@@ -365,6 +365,12 @@ abstract class GoogleMapsFlutterPlatform extends PlatformInterface {
     throw UnimplementedError('dispose() has not been implemented.');
   }
 
+  /// A native Google POI has been tapped.
+  Stream<PoiTapEvent> onPoiTap({required int mapId}) {
+    throw UnimplementedError('onPoiTap() has not been implemented.');
+  }
+
+
   /// Returns a widget displaying the map view - deprecated, use
   /// [buildViewWithConfiguration] instead.
   Widget buildView(

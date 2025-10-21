@@ -123,6 +123,7 @@ class GoogleMap extends StatefulWidget {
     this.onCameraIdle,
     this.onTap,
     this.onLongPress,
+    this.onPoiTap,
   })  : assert(initialCameraPosition != null),
         super(key: key);
 
@@ -224,6 +225,9 @@ class GoogleMap extends StatefulWidget {
 
   /// Called every time a [GoogleMap] is long pressed.
   final ArgumentCallback<LatLng>? onLongPress;
+
+  /// Called when a Google POI (blue pin) is tapped.
+  final ValueChanged<Poi>? onPoiTap;
 
   /// True if a "My Location" layer should be shown on the map.
   ///
@@ -529,7 +533,14 @@ class _GoogleMapState extends State<GoogleMap> {
       onLongPress(position);
     }
   }
+  
+  void onPoiTap(Poi poi) {
+    final ValueChanged<Poi>? cb = widget.onPoiTap;
+    if (cb != null) cb(poi);
+  }
 }
+
+
 
 /// Builds a [MapConfiguration] from the given [map].
 MapConfiguration _configurationFromMapWidget(GoogleMap map) {

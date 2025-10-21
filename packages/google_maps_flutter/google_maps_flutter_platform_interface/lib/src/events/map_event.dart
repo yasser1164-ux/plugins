@@ -170,3 +170,18 @@ class MapLongPressEvent extends _PositionedMapEvent<void> {
   /// The `position` of this event is the LatLng where the Map was long pressed.
   MapLongPressEvent(int mapId, LatLng position) : super(mapId, position, null);
 }
+
+/// Fired when a native Google POI (blue Google marker) is tapped.
+class PoiTapEvent extends MapEvent<Map<String, Object>> {
+  PoiTapEvent(int mapId, Map<String, Object> value) : super(mapId, value);
+
+  String get placeId => (value['placeId'] as String?) ?? '';
+  String get name => (value['name'] as String?) ?? '';
+  LatLng get position {
+    final pos = (value['position'] as Map?) ?? const {};
+    return LatLng(
+      (pos['lat'] as num).toDouble(),
+      (pos['lng'] as num).toDouble(),
+    );
+  }
+}

@@ -31,7 +31,7 @@ public class GoogleMapsPlugin implements FlutterPlugin, ActivityAware {
   private static final String VIEW_TYPE = "plugins.flutter.dev/google_maps_android";
 
   @SuppressWarnings("deprecation")
-  public static void registerWith(
+ /* public static void registerWith(
       final io.flutter.plugin.common.PluginRegistry.Registrar registrar) {
     final Activity activity = registrar.activity();
     if (activity == null) {
@@ -63,7 +63,7 @@ public class GoogleMapsPlugin implements FlutterPlugin, ActivityAware {
                   registrar.context(),
                   new ProxyLifecycleProvider(activity)));
     }
-  }
+  }*/
 
   public GoogleMapsPlugin() {}
 

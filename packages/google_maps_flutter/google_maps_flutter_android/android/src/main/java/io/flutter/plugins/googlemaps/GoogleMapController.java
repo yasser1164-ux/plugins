@@ -97,8 +97,8 @@ final class GoogleMapController
     this.options = options;
     this.mapView = new MapView(context, options);
     this.density = context.getResources().getDisplayMetrics().density;
-    methodChannel =
-        new MethodChannel(binaryMessenger, "plugins.flutter.dev/google_maps_android_" + id);
+    methodChannel = new MethodChannel(binaryMessenger, "plugins.flutter.dev/google_maps_android_" + id);
+
     methodChannel.setMethodCallHandler(this);
     this.lifecycleProvider = lifecycleProvider;
     this.markersController = new MarkersController(methodChannel);
@@ -605,6 +605,21 @@ final class GoogleMapController
     googleMap.setOnCircleClickListener(listener);
     googleMap.setOnMapClickListener(listener);
     googleMap.setOnMapLongClickListener(listener);
+    // NEW: forward native POI taps to Flutter
+    googleMap.setOnPoiClickListener(new com.google.android.gms.maps.GoogleMap.OnPoiClickListener() {
+      @Override
+      public void onPoiClick(com.google.android.gms.maps.model.PointOfInterest poi) {
+        java.util.HashMap<String, Object> data = new java.util.HashMap<>();
+        data.put("placeId", poi.placeId != null ? poi.placeId : "");
+        data.put("name", poi.name != null ? poi.name : "");
+        java.util.HashMap<String, Object> pos = new java.util.HashMap<>();
+        pos.put("lat", poi.latLng.latitude);
+        pos.put("lng", poi.latLng.longitude);
+        data.put("position", pos);
+
+        methodChannel.invokeMethod("poi#onTap", data);
+      }
+    });
   }
 
   // @Override
@@ -652,7 +667,7 @@ final class GoogleMapController
     if (disposed) {
       return;
     }
-    mapView.onResume();
+    mapView.onPause();
   }
 
   @Override
